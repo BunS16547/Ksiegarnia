@@ -1,0 +1,54 @@
+﻿@model List<Ksiegarnia.ViewModels.UsersManage.UserViewModel>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h2>Users</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">
+    Add User
+</a>
+
+<table class="table table-striped">
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    
+    <thead>
+        <tr>
+            <th>User email: </th>
+            <th>User Role: </th>
+            <th>User initials: </th>
+            <th>Lockout until:</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model) {
+            <tr>
+                <td>@user.Email</td>
+                <td>@user.Role</td>
+                <td>@user.Initials</td>
+                <td>
+                    @(user.LockoutEnd != null && user.LockoutEnd > DateTimeOffset.Now
+                        ? user.LockoutEnd.ToString()
+                        : "-")
+                </td>
+                <td class="text-end">
+                    <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-sm btn-outline-secondary">
+                        Edit
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@user.Id" class="btn btn-sm btn-outline-secondary">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,15 @@
+﻿@model Ksiegarnia.ViewModels.Authors.AuthorViewModel
+
+@{
+    ViewData["Title"] = "Create an author";
+    ViewData["Action"] = "Create";
+}
+<div>
+    <h2>Create an author</h2>
+    
+    <form asp-action="@(ViewData["Action"] as string)" method="post">
+
+        <partial name="_AuthorForm" model="Model"/>
+
+    </form>
+</div>

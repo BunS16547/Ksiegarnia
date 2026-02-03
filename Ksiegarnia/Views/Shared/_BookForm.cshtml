@@ -1,0 +1,40 @@
+﻿@model Ksiegarnia.ViewModels.Books.BookViewModel
+
+<div>
+    <div class="form-wrapper">
+        <label asp-for="Title">Title</label>
+        <input class="form-input" asp-for="Title" />
+        <span asp-validation-for="Title"></span>
+    </div>
+    
+    <div class="form-wrapper">
+        <label asp-for="AuthorName">Author</label>
+        <select class="form-select" asp-for="AuthorName" asp-items="ViewBag.Authors">
+            <option value="">-- choose --</option>
+        </select>
+        <span asp-validation-for="AuthorName"></span>
+    </div>
+
+    <div class="form-wrapper">
+        <label asp-for="IsbnValue" for="isbnInputId">ISBN</label>
+        <div class="flex-row gap-1">
+            <input class="form-input" asp-for="IsbnValue" id="isbnInputId"/>
+            <button class="btn btn-secondary" type="button" onclick="generateRandomIsbn('isbnInputId')">
+                Generate random Isbn
+            </button>
+        </div>
+        <span asp-validation-for="IsbnValue"></span>
+    </div>
+
+    <div class="form-wrapper">
+        <label asp-for="CategoryName">Category</label>
+        <select class="form-select" asp-for="CategoryName" asp-items="ViewBag.Categories">
+            <option value="">-- choose --</option>
+        </select>
+        <span asp-validation-for="CategoryName"></span>
+    </div>
+    
+    <button class="btn btn-primary form-button" type="submit">
+        Submit
+    </button>
+</div>

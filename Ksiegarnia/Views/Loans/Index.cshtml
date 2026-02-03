@@ -1,0 +1,75 @@
+﻿@model List<Ksiegarnia.ViewModels.Loans.LoanViewModel>
+
+@{
+    ViewData["Title"] = "Loans";
+}
+
+<h2>Loans</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">
+    Create loan
+</a>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Book</th>
+            <th>Loaned at</th>
+            <th>Due at</th>
+            <th>Returned at</th>
+            <th>Is active</th>
+            <th>Is overdue</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var loan in Model)
+        {
+            <tr>
+                <td>@loan.UserEmail</td>
+                <td>@loan.BookTitle</td>
+                <td>@loan.LoanedAt</td>
+                <td>@loan.DueAt</td>
+                <td>@(loan.ReturnedAt?.ToString() ?? "-")</td>
+                <td>
+                    @if (loan.IsActive)
+                    {
+                        <span class="badge bg-success">Yes</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">No</span>
+                    }
+                </td>
+                <td>
+                    @if (loan.IsOverdue)
+                    {
+                        <span class="badge bg-success">Yes</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">No</span>
+                    }
+                </td>
+                <td class="text-end">
+                    <a asp-action="Edit" asp-route-id="@loan.Id" class="btn btn-sm btn-outline-secondary">
+                        Edit
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@loan.Id" class="btn btn-sm btn-outline-danger">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

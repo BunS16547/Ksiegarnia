@@ -1,0 +1,77 @@
+﻿@model List<Ksiegarnia.ViewModels.Isbns.IsbnViewModel>
+
+@{
+    ViewData["Title"] = "Isbns";
+}
+
+<h2>Isbns</h2>
+
+@* CREATE  tylko dla adminów i edytorów*@
+@if (User.IsInRole("Admin") || User.IsInRole("Editor")) {
+    <a asp-action="Create" asp-controller="Isbns" class="btn btn-primary mb-3">
+        Add Isbn
+    </a>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No ISBNs found.</div>
+}
+else
+{
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>ISBN value</th>
+                <th>Assigned book</th>
+                <th class="text-end"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var isbn in Model)
+            {
+                <tr>
+                    <td>@isbn.Value</td>
+
+                    <td>
+                        @if (!string.IsNullOrWhiteSpace(isbn.BookTitle))
+                        {
+                            <span>@isbn.BookTitle</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted">No book assigned</span>
+                        }
+                    </td>
+
+                    @* EDIT / DELETE  tylko dla adminów i edytorów*@
+                    @if (User.IsInRole("Admin") || User.IsInRole("Editor")) {
+                        <td class="text-end">
+                            <a asp-action="Edit" asp-controller="Isbns" asp-route-id="@isbn.Id"
+                               class="btn btn-sm btn-outline-secondary">
+                                Edit
+                            </a>
+                            <a asp-action="Delete" asp-controller="Isbns" asp-route-id="@isbn.Id"
+                               class="btn btn-sm btn-outline-secondary">
+                                Delete
+                            </a>
+                        </td>
+                    }
+                    else {
+                        <td></td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}

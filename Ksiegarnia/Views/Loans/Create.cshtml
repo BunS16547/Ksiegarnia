@@ -1,0 +1,45 @@
+﻿@model Ksiegarnia.ViewModels.Loans.LoanCreateViewModel
+
+@{
+    ViewData["Title"] = "Create loan";
+}
+
+<h2>Create loan</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<form asp-action="Create" method="post" class="mt-3">
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label asp-for="BookId" class="form-label">Book</label>
+        <select asp-for="BookId" asp-items="Model.AvailableBooks" class="form-select">
+            <option value="">-- select book --</option>
+        </select>
+        <span asp-validation-for="BookId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="UserId" class="form-label">User (email)</label>
+        <select asp-for="UserId" asp-items="Model.AvailableUsers" class="form-select">
+            <option value="">-- select user --</option>
+        </select>
+        <span asp-validation-for="UserId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Days" class="form-label">Days</label>
+        <input asp-for="Days" type="number" max="60" min="1" class="form-control" />
+        <span asp-validation-for="Days" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

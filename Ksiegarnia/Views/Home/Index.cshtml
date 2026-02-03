@@ -1,0 +1,111 @@
+﻿@model Ksiegarnia.ViewModels.Home.IndexViewModel
+
+@{
+    ViewData["Title"] = "Welcome";
+}
+
+<div class="container mt-4">
+
+    <div class="p-4 rounded-4 border border-light bg-black">
+        <h1 class="display-5 mb-2">Ksiegarnia</h1>
+
+        @if (Model.IsAuthenticated)
+        {
+            <p class="lead mb-0">
+                Welcome back, <strong>@(Model.UserEmail)</strong>.
+            </p>
+        }
+        else
+        {
+            <p class="lead mb-0">
+                Browse the catalog and rent books after signing in.
+            </p>
+        }
+
+        <div class="mt-3 d-flex gap-2 flex-wrap">
+            @if (!Model.IsAuthenticated)
+            {
+                <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                <a class="btn btn-outline-secondary" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                <a class="btn btn-outline-info" asp-controller="Home" asp-action="Help">How it works</a>
+            }
+            else
+            {
+                <a class="btn btn-primary" asp-controller="Books" asp-action="Index">Browse books</a>
+                <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="Index">My profile</a>
+                <a class="btn btn-outline-info" asp-controller="Home" asp-action="Help">Help</a>
+            }
+        </div>
+    </div>
+
+    <div class="row mt-4 g-3">
+        <div class="col-12 col-md-3">
+            <div class="p-3 rounded-4 border bg-white">
+                <div class="h5 mb-1 text-dark">Books</div>
+                <div class="display-6 text-dark">@Model.BooksCount</div>
+                <a class="btn btn-sm btn-outline-secondary mt-2" asp-controller="Books" asp-action="Index">Open</a>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-3">
+            <div class="p-3 rounded-4 border bg-white">
+                <div class="h5 mb-1 text-dark">Authors</div>
+                <div class="display-6 text-dark">@Model.AuthorsCount</div>
+                <a class="btn btn-sm btn-outline-secondary mt-2" asp-controller="Authors" asp-action="Index">Open</a>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-3">
+            <div class="p-3 rounded-4 border bg-white">
+                <div class="h5 mb-1 text-dark">Categories</div>
+                <div class="display-6 text-dark">@Model.CategoriesCount</div>
+                <a class="btn btn-sm btn-outline-secondary mt-2" asp-controller="Categories" asp-action="Index">Open</a>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-3">
+            <div class="p-3 rounded-4 border bg-white">
+                <div class="h5 mb-1 text-dark">ISBNs</div>
+                <div class="display-6 text-dark">@Model.IsbnsCount</div>
+                <a class="btn btn-sm btn-outline-secondary mt-2" asp-controller="Isbns" asp-action="Index">Open</a>
+            </div>
+        </div>
+        
+        @if (Model.IsAdminOrEditor) {
+            <div class="col-12 col-md-3">
+                <div class="p-3 rounded-4 border bg-white">
+                    <div class="h5 mb-1 text-dark">Active Loans</div>
+                    <div class="display-6 text-dark">@Model.ActiveLoansCount</div>
+                    <a class="btn btn-sm btn-outline-secondary mt-2" asp-controller="Loans" asp-action="Index">Open</a>
+                </div>
+            </div>
+        }
+        
+       
+    </div>
+
+    @if (Model.IsAuthenticated && Model.IsAdminOrEditor)
+    {
+        <div class="mt-4 p-4 rounded-4 border border-light bg-black">
+            <h2 class="h4 mb-2">Admin / Editor tools</h2>
+            <p class="mb-3">Management shortcuts for staff roles.</p>
+
+            <div class="d-flex gap-2 flex-wrap">
+                @if (Model.IsAdmin) {
+                    <a class="btn btn-outline-secondary" asp-controller="UsersManage" asp-action="Index">Manage Users</a>
+                }
+                <a class="btn btn-outline-secondary" asp-controller="Books" asp-action="Create">Add a Book</a>
+                <a class="btn btn-outline-secondary" asp-controller="Authors" asp-action="Create">Add an Author</a>
+                <a class="btn btn-outline-secondary" asp-controller="Categories" asp-action="Create">Add a Category</a>
+                <a class="btn btn-outline-secondary" asp-controller="Isbns" asp-action="Create">Add an Isbn</a>
+                <a class="btn btn-outline-secondary" asp-controller="Loans" asp-action="Create">Add a Loan</a>
+            </div>
+        </div>
+    }
+
+    <div class="mt-4 text-center">
+        <a asp-controller="Home" asp-action="About">About the project</a>
+        <span class="mx-2">·</span>
+        <a asp-controller="Home" asp-action="Help">Help</a>
+    </div>
+</div>

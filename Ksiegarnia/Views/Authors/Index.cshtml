@@ -1,0 +1,78 @@
+﻿@model List<Ksiegarnia.ViewModels.Authors.AuthorViewModel>
+
+@{
+    ViewData["Title"] = "Authors";
+}
+
+<h2>Authors</h2>
+
+@* CREATE  tylko dla adminów i edytorów*@
+@if (User.IsInRole("Admin") || User.IsInRole("Editor")) {
+    <a asp-action="Create" asp-controller="Authors" class="btn btn-primary mb-3">
+        Add Author
+    </a>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No authors found.</div>
+}
+else
+{
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Author name</th>
+                <th>Age</th>
+                <th>Books</th>
+                <th class="text-end"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var author in Model)
+            {
+                <tr>
+                    <td>@author.Name</td>
+                    <td>@author.Age</td>
+                    <td>
+                        @if (author.BookTitles != null && author.BookTitles.Any())
+                        {
+                            <span>@string.Join(", ", author.BookTitles)</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted">No books</span>
+                        }
+                    </td>
+
+                    @* EDIT / DELETE  tylko dla adminów i edytorów*@
+                    @if (User.IsInRole("Admin") || User.IsInRole("Editor")) {
+                        <td class="text-end">
+                            <a asp-action="Edit" asp-controller="Authors" asp-route-id="@author.Id"
+                               class="btn btn-sm btn-outline-secondary">
+                                Edit
+                            </a>
+                            <a asp-action="Delete" asp-controller="Authors" asp-route-id="@author.Id"
+                               class="btn btn-sm btn-outline-secondary">
+                                Delete
+                            </a>
+                        </td>
+                    }
+                    else {
+                        <td></td>
+                    }
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+}

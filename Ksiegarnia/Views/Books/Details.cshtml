@@ -1,0 +1,105 @@
+﻿@model Ksiegarnia.ViewModels.Books.BookViewModel
+
+@{
+    ViewData["Title"] = "Book details";
+
+    var isAvailable = Model.IsAvailableForRent;
+    var hasAuthor = !string.IsNullOrWhiteSpace(Model.AuthorName);
+    var hasIsbn = !string.IsNullOrWhiteSpace(Model.IsbnValue);
+    var hasCategory = !string.IsNullOrWhiteSpace(Model.CategoryName);
+}
+
+<h2 class="mb-3">Book details</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start gap-3">
+            <div>
+                <h4 class="mb-1 text-dark">Title: @Model.Title</h4>
+
+                @if (isAvailable)
+                {
+                    <span class="badge bg-success">Available for rent</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">Unavailable for rent</span>
+                }
+
+                @if (!isAvailable && Model.UnavailableUntil != null)
+                {
+                    <div class="text-muted mt-2">
+                        <strong>Available again:</strong> @Model.UnavailableUntil
+                    </div>
+                }
+            </div>
+
+            <div class="text-end">
+                <a asp-action="Index" asp-controller="Books" class="btn btn-sm btn-outline-secondary">
+                    Back to list
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table table-striped">
+    <tbody>
+        <tr>
+            <th style="width: 220px;">Author</th>
+            <td>@(hasAuthor ? Model.AuthorName : "Not assigned")</td>
+        </tr>
+        <tr>
+            <th>ISBN</th>
+            <td>@(hasIsbn ? Model.IsbnValue : "Not assigned")</td>
+        </tr>
+        <tr>
+            <th>Category</th>
+            <td>@(hasCategory ? Model.CategoryName : "Not assigned")</td>
+        </tr>
+    </tbody>
+</table>
+
+@* Przyciski akcji na książe - tylko dla zalogowanych *@
+<div class="d-flex gap-2 mt-3">
+    @if (User.Identity?.IsAuthenticated == true) {
+        
+        @* RENT  tylko dla zalogowanych*@
+        @if (isAvailable) { 
+            <a asp-action="Rent" asp-route-id="@Model.Id" asp-controller="Books"
+               class="btn btn-primary">
+                Rent this book
+            </a>
+        }
+        else {
+            <button type="button" class="btn btn-primary" disabled
+                    title="This book is currently unavailable">
+                Rent this book
+            </button>
+        }
+        
+        @* EDIT / DELETE  tylko dla adminów i edytorów*@
+        @if (User.IsInRole("Admin") || User.IsInRole("Editor")) {
+            <a asp-action="Edit" asp-route-id="@Model.Id" asp-controller="Books"
+               class="btn btn-outline-info">
+                Edit
+            </a>
+
+            <a asp-action="Delete" asp-route-id="@Model.Id" asp-controller="Books"
+               class="btn btn-outline-danger">
+                Delete
+            </a>
+        }
+    }
+    
+    
+</div>

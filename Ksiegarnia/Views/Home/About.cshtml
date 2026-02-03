@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "About";
+}
+
+<div class="container mt-4">
+    <div class="p-4 rounded-4 border border-light bg-black">
+        <h1 class="h2 mb-3">About App Ksiegarnia</h1>
+
+        <p class="mb-2">
+            This is a simple app focused on renting books and allowing for full managament of data.
+            It's main focus is to smoothly change data between different tables in a database that are related to one another.
+            Also it is supposed to authorize users and authenticate them in order to allow them to make actions in this app.
+        </p>
+
+        <h2 class="h4 mt-4">Roles</h2>
+        <ul>
+            <li><strong>Not Logged In</strong> - can browse data</li>
+            <li><strong>User</strong> – can browse data and rent books, manage his profile.</li>
+            <li><strong>Editor</strong> – can do what user does, but also manage all data.</li>
+            <li><strong>Admin</strong> – full access, including user management.</li>
+        </ul>
+
+        <div class="mt-3">
+            <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">Back to Home</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+﻿@model Ksiegarnia.ViewModels.Loans.LoanEditViewModel
+
+@{
+    ViewData["Title"] = "Edit loan";
+}
+
+<h2>Edit loan</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<div class="card mb-3">
+    <div class="card-body color-dark">
+        <div><strong>Current book:</strong> @Model.CurrentBookTitle</div>
+        <div><strong>Current user:</strong> @Model.CurrentUserEmail</div>
+        <div><strong>Loaned at:</strong> @Model.LoanedAt</div>
+        <div><strong>Due at:</strong> @Model.DueAt</div>
+        <div><strong>Returned at:</strong> @(Model.ReturnedAt?.ToString() ?? "-")</div>
+    </div>
+</div>
+
+<form asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="NewBookId" class="form-label">Change book (only available books)</label>
+        <select asp-for="NewBookId" asp-items="Model.AvailableBooks" class="form-select">
+            <option value="">-- keep current --</option>
+        </select>
+        <span asp-validation-for="NewBookId" class="text-danger"></span>
+        <div class="form-text">
+            If you select a new book, it must be available for rent.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="NewUserId" class="form-label">Change user</label>
+        <select asp-for="NewUserId" asp-items="Model.AvailableUsers" class="form-select">
+            <option value="">-- select user --</option>
+        </select>
+        <span asp-validation-for="NewUserId" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="HasBeenReturned" class="form-check-input" />
+        <label asp-for="HasBeenReturned" class="form-check-label">
+            Mark as returned (sets ReturnedAt to today)
+        </label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save changes</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

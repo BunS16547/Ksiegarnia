@@ -1,0 +1,53 @@
+﻿@model Ksiegarnia.ViewModels.UsersManage.UserDeleteViewModel
+
+@{
+    ViewData["Title"] = "Delete user";
+}
+
+<div>
+    <h2>Are you sure you want to delete this user?</h2>
+    
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <p>
+        <strong>Email:</strong> @Model.Email
+    </p>
+
+    @if (!string.IsNullOrWhiteSpace(Model.Initials))
+    {
+        <p>
+            <strong>Initials:</strong> @Model.Initials
+        </p>
+    }
+    else
+    {
+        <p>
+            <strong>Initials:</strong> Not provided
+        </p>
+    }
+
+    <p>
+        <strong>Email confirmed:</strong>
+        @(Model.EmailConfirmed ? "Yes" : "No")
+    </p>
+    
+    <p>
+        <strong>Role of the user: </strong> @Model.UserRole
+    </p>
+    
+   
+
+    <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Delete the user</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

@@ -1,0 +1,29 @@
+﻿@model Ksiegarnia.ViewModels.Categories.CategoryViewModel
+
+@{
+    ViewData["Title"] = "Delete a category";
+}
+
+<div class="delete-wrapper">
+    <h1>Are you sure you want to delete this Category?</h1>
+
+    <h2>Name of the category: @Model.Name</h2>
+    
+    @if (Model.BookTitles != null && Model.BookTitles.Count > 0)
+    { 
+        <h2>Books' titles assigned to this category are: </h2>
+                        
+        @foreach (var bookTitle in Model.BookTitles) {
+            <h4 class="book-title">@bookTitle</h4>
+        }
+    }
+    else
+    {
+        <h2>No books assigned to this category :[</h2>
+    }
+    
+    <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+        <input type="hidden" asp-for="Id"/>
+        <input type="submit" class="btn btn-danger" value="Delete the Category"/>
+    </form>
+</div>

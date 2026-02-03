@@ -1,0 +1,108 @@
+﻿@model Ksiegarnia.ViewModels.UsersProfile.MyLoansViewModel
+
+@{
+    ViewData["Title"] = "My loans";
+}
+
+<h2>My loans</h2>
+<div class="mb-3">
+    <a asp-action="Index" class="btn btn-primary">Go back</a>
+</div>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<h4 class="mt-4">Active loans</h4>
+
+@if (!Model.ActiveLoans.Any())
+{
+    <p>No active loans.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Book</th>
+            <th>Loaned at</th>
+            <th>Due at</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var loan in Model.ActiveLoans)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Books" asp-action="Details" asp-route-id="@loan.BookId">
+                        @loan.BookTitle
+                    </a>
+                </td>
+                <td>@loan.LoanedAt</td>
+                <td>@loan.DueAt</td>
+                <td>
+                    @if (loan.IsOverdue)
+                    {
+                        <span class="badge bg-danger">Overdue</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                </td>
+                <td class="text-end">
+                    <form asp-controller="Books" asp-action="Return" asp-route-id="@loan.BookId" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-outline-secondary">
+                            Return
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+<h4 class="mt-5">Loan history</h4>
+
+@if (!Model.HistoryLoans.Any())
+{
+    <p>No loan history.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Book</th>
+                <th>Loaned at</th>
+                <th>Due at</th>
+                <th>Returned at</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var loan in Model.HistoryLoans)
+            {
+                <tr>
+                    <td>
+                        <a asp-controller="Books" asp-action="Details" asp-route-id="@loan.BookId">
+                            @loan.BookTitle
+                        </a>
+                    </td>
+                    <td>@loan.LoanedAt</td>
+                    <td>@loan.DueAt</td>
+                    <td>@(loan.ReturnedAt?.ToString() ?? "-")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

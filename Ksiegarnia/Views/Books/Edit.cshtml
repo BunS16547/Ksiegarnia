@@ -1,0 +1,15 @@
+﻿@model Ksiegarnia.ViewModels.Books.BookViewModel
+
+@{
+    ViewData["Title"] = "Edit a book";
+    ViewData["Action"] = "Edit";
+}
+
+<div>
+    <h2>Edit a book</h2>
+    <form asp-action="@(ViewData["Action"] as string)"  asp-route-id="@Model.Id" method="post">
+        <input type="hidden" asp-for="Id"/>
+        
+        <partial name="_BookForm" model="Model" />
+    </form>
+</div>

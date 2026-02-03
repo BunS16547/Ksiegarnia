@@ -1,0 +1,14 @@
+﻿@model Ksiegarnia.ViewModels.Categories.CategoryViewModel
+
+<div>
+    <div class="form-wrapper">
+        <label asp-for="Name">Category name</label>
+        <input class="form-input" asp-for="Name" />
+        <span asp-validation-for="Name"></span>
+    </div>
+
+    <button class="btn btn-primary form-button" type="submit">
+        Submit
+    </button>
+</div>
+

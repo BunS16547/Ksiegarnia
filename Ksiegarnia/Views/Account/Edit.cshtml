@@ -1,0 +1,36 @@
+﻿@model Ksiegarnia.ViewModels.UsersProfile.UserProfileEditViewModel
+
+@{
+    ViewData["Title"] = "Edit personal information";
+}
+
+<h2>Edit personal information</h2>
+
+<form asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Initials" class="form-label"></label>
+        <input asp-for="Initials" class="form-control" />
+        <span asp-validation-for="Initials" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="EnableNotifications" class="form-check-input" />
+        <label asp-for="EnableNotifications" class="form-check-label">Enable Notifications</label>
+        <span asp-validation-for="EnableNotifications" class="text-danger"></span>
+    </div>
+    
+    <button type="submit" class="btn btn-success">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

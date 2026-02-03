@@ -1,0 +1,48 @@
+﻿@model Ksiegarnia.ViewModels.Loans.LoanDeleteViewModel
+
+@{
+    ViewData["Title"] = "Delete loan";
+}
+
+<h2>Delete loan</h2>
+
+<div class="alert alert-warning">
+    Are you sure you want to permanently delete this loan?
+</div>
+
+<table class="table table-striped">
+    <tbody>
+        <tr>
+            <th style="width: 220px;">User</th>
+            <td>@Model.UserEmail</td>
+        </tr>
+        <tr>
+            <th>Book</th>
+            <td>@Model.BookTitle</td>
+        </tr>
+        <tr>
+            <th>Loaned at</th>
+            <td>@Model.LoanedAt</td>
+        </tr>
+        <tr>
+            <th>Due at</th>
+            <td>@Model.DueAt</td>
+        </tr>
+        <tr>
+            <th>Returned at</th>
+            <td>@(Model.ReturnedAt?.ToString() ?? "-")</td>
+        </tr>
+        <tr>
+            <th>Is active</th>
+            <td>@(Model.IsActive ? "Yes" : "No")</td>
+        </tr>
+    </tbody>
+</table>
+
+<form asp-action="Delete" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

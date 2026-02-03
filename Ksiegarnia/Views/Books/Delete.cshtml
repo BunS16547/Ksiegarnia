@@ -1,0 +1,44 @@
+﻿@model Ksiegarnia.ViewModels.Books.BookViewModel
+
+@{
+    ViewData["Title"] = "Delete a book";
+}
+
+<div class="delete-wrapper">
+    <h1>Are you sure you want to delete this book?</h1>
+
+    <h2>Title of the book: @Model.Title</h2>
+    
+    @if (Model.IsAvailableForRent)
+    {
+        <h2>This book is available for rent</h2>
+    }
+    else
+    {
+        <h2 class="text-muted">This book is unrentable</h2>
+    }
+    
+    @if (!Model.IsAvailableForRent) {
+        <h2 class="text-muted">Book is unavailable for rent until: @Model.UnavailableUntil</h2>
+    }
+  
+    
+    @if(Model.AuthorName != null) {
+        <h2> This book's author's name is: @Model.AuthorName</h2>
+    }
+    else {
+        <h2> No Author is registered for this book</h2>
+    }
+    
+    @if(!String.IsNullOrWhiteSpace(Model.IsbnValue)) {
+        <h2>Isbn registered for this book: @Model.IsbnValue</h2>
+    }
+    else {
+        <h2> No Isbn is registered for this book</h2>
+    }
+    
+    <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+        <input type="hidden" asp-for="Id"/>
+        <input type="submit" class="btn btn-danger" value="Delete the book"/>
+    </form>
+</div>

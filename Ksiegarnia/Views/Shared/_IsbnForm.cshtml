@@ -1,0 +1,18 @@
+﻿@model Ksiegarnia.ViewModels.Isbns.IsbnViewModel
+
+<div>
+    <div class="form-wrapper">
+        <label asp-for="Value" for="isbnInputId">ISBN</label>
+        <div class="flex-row gap-1">
+            <input class="form-input" asp-for="Value" id="isbnInputId"/>
+            <button class="btn btn-secondary" type="button" onclick="generateRandomIsbn('isbnInputId')">
+                Generate random Isbn
+            </button>
+        </div>
+        <span asp-validation-for="Value"></span>
+    </div>
+
+    <button class="btn btn-primary form-button" type="submit">
+        Submit
+    </button>
+</div>
